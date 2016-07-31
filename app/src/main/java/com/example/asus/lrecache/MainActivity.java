@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.HandlerThread;
 import android.util.Log;
 import android.util.LruCache;
 import android.view.View;
@@ -46,7 +47,12 @@ public class MainActivity extends Activity implements View.OnClickListener{
     private void initLruCache() {
         final int maxMemory = (int)(Runtime.getRuntime().maxMemory()/1024);
         int cacheSize = maxMemory/8;
-        mLruCache = new LruCache<>(cacheSize);
+        mLruCache = new LruCache<String,Bitmap>(cacheSize) {
+            @Override
+            protected int sizeOf(String key, Bitmap value) {
+                return value.getByteCount();
+            }
+        };
     }
     //初始化线程池
     private void initPool() {
