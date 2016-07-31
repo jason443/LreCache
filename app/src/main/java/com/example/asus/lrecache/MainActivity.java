@@ -127,4 +127,10 @@ public class MainActivity extends Activity implements View.OnClickListener{
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.photo2);
         mShowImageIv.setImageBitmap(bitmap);
     }
+
+    @Override
+    protected void onDestroy() {
+        mExecutorPool.shutdown();
+        super.onDestroy();
+    }
 }
